@@ -1,0 +1,8 @@
+<field name="policy_datastream_users_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="policy_datastream_roles_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="policy_datastream_types_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="policy_management_users_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="policy_management_roles_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="compound_policy_datastream_children_users_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="compound_policy_datastream_children_roles_ms" type="string" indexed="true" stored="true" multiValued="true"/>
+<field name="compound_policy_datastream_children_access_levels_ms" type="string" indexed="true" stored="true" multiValued="true"/>

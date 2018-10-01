@@ -1,0 +1,15 @@
+<requestHandler name="/update" class="solr.UpdateRequestHandler">
+    <lst name="defaults">
+        <str name="update.chain">uniq-fields</str>
+    </lst>
+</requestHandler>
+
+<updateRequestProcessorChain name="uniq-fields">
+    <processor class="org.apache.solr.update.processor.DistributedUpdateProcessorFactory"/>
+    <processor class="org.apache.solr.update.processor.UniqFieldsUpdateProcessorFactory">
+        <str name="fieldName">compound_policy_datastream_children_users_ms</str>
+        <str name="fieldName">compound_policy_datastream_children_roles_ms</str>
+      <str name="fieldName">compound_policy_datastream_children_access_levels_ms</str>
+    </processor>
+    <processor class="solr.RunUpdateProcessorFactory"/>
+</updateRequestProcessorChain>

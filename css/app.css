@@ -1,0 +1,42 @@
+.permission-labels {
+
+    padding-top: 10px;
+    clear: both;
+}
+
+.block ul.permission-labels-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.access {
+    color: white;
+    padding: 4px 4px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    width: 150px;
+    margin: 3px;
+    display: inline-block;
+}
+
+.public {
+    background: #43ac6a;
+}
+
+.authenticated {
+    color: #82888e;
+    background: #fff12d;
+}
+
+.academic {
+    background: #46b8da;
+}
+
+.restricted {
+    background: #e99002;
+}

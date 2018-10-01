@@ -1,0 +1,82 @@
+<?php
+/**
+ * hook_theme implementation
+ *
+ * @param array  $existing
+ * @param string $type
+ * @param string $theme
+ * @param string $path
+ *
+ * @return array
+ */
+
+function flat_access_level_display_islandora_compound_object_access_level_display_theme($pid) {
+
+    drupal_add_css(drupal_get_path('module', 'flat_access_level_display') . '/css/app.css');
+
+    $object      = islandora_object_load($pid);
+    $manager     = new PermissionsManager($object);
+    $permissions = $manager->getCurrentPermissions();
+    $readGroup   = $manager->determineGroup($permissions['read']['roles']);
+
+    return theme('flat_permissions_permission_labels', [
+        'readGroup' => $readGroup,
+    ]);
+}
+
+function flat_access_level_display_theme($existing, $type, $theme, $path) {
+
+    return [
+
+        // this theme gets called from within islandora_compound_object module
+        // and we then override it using template defined above
+        'flat_access_level_display_display_label' => [
+
+            'function'  => 'flat_access_level_display_display_label',
+            'variables' => [
+                'pid' => null,
+            ],
+        ],
+
+        'flat_access_level_display_display_label_template' => [
+            'template' => 'theme/flat-access-level-display-display-label',
+        ],
+
+        'flat_access_level_display_facets' => [
+            'template' => 'theme/flat-access-level-display-facets',
+        ],
+    ];
+}
+
+function flat_access_level_display_display_label($vars) {
+
+    drupal_add_css(drupal_get_path('module', 'flat_access_level_display') . '/css/app.css');
+    module_load_include('inc', 'flat_access_level_display', 'includes/AccessLevel');
+
+    $accessLevel = new AccessLevel($vars['pid']);
+
+    return theme('flat_access_level_display_display_label_template', [
+        'access_level' => $accessLevel->fetch(),
+    ]);
+}
+
+/**
+ * Islandora solr Facet wrapper preprocessor
+ *
+ * @param  array $variables
+ * @return void
+ */
+function flat_access_level_display_preprocess_islandora_solr_facet_wrapper(&$variables) {
+
+    module_load_include('inc', 'flat_access_level_display', 'includes/AccessLevelFacet');
+
+    if ($variables['pid'] === AccessLevelFacet::FACET_FIELD) {
+
+        global $_islandora_solr_queryclass;
+
+        drupal_add_css(drupal_get_path('module', 'flat_access_level_display') . '/css/app.css');
+
+        $accessLevelFacet = new AccessLevelFacet($_islandora_solr_queryclass);
+        $variables['content'] = $accessLevelFacet->render();
+    }
+}
