@@ -34,9 +34,9 @@ class AccessLevel
      */
     private $roleStrength = [
 
-        self::ROLE_ANONYMOUS     => 1,
+        self::ROLE_ANONYMOUS     => 3,
         self::ROLE_AUTHENTICATED => 2,
-        self::ROLE_ACADEMIC      => 3,
+        self::ROLE_ACADEMIC      => 1,
     ];
 
     /**
