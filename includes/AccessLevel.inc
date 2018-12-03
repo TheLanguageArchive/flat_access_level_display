@@ -25,9 +25,14 @@ class AccessLevel
     private $object;
 
     /**
-     * @var IslandoraXacml
+     * @var string
      */
-    private $xacml;
+    private $pid;
+
+    /**
+     * @var Apache_Solr_Service
+     */
+    private $solr;
 
     /**
      * @var array
@@ -46,7 +51,26 @@ class AccessLevel
      */
     public function __construct(string $pid)
     {
-        $this->xacml = new IslandoraXacml(islandora_object_load($pid));
+        $this->pid = $pid;
+    }
+
+    /**
+     * Connecting to solr
+     *
+     * @return Apache_Solr_Service
+     */
+    public function connect()
+    {
+        if (null !== $this->solr) {
+            return $this->solr;
+        }
+
+        $path_parts = parse_url(variable_get('islandora_solr_url', 'localhost:8080/solr'));
+
+        $this->solr = new Apache_Solr_Service($path_parts['host'], $path_parts['port'], $path_parts['path'] . '/');
+        $this->solr->setCreateDocuments(0);
+
+        return $this->solr;
     }
 
     /**
@@ -57,7 +81,23 @@ class AccessLevel
      */
     public function fetch()
     {
-        $roles       = $this->xacml->datastreamRule->getRoles();
+        // connect to solr
+        $this->connect();
+
+        try {
+            $results = $this->solr->search('PID:' . str_replace(':', '\:', $this->pid), 0, 10);
+        } catch (Exception $e) {
+
+            drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error');
+            return self::ROLE_SPECIFIC;
+        }
+
+        $data = json_decode($results->getRawResponse(), true);
+        if ($data['response']['numFound'] < 1) {
+            return self::ROLE_SPECIFIC;
+        }
+
+        $roles       = $data['response']['docs'][0]['policy_datastream_roles_ms'];
         $sortedRoles = [];
 
         foreach ($roles as $role) {
