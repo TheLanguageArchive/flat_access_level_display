@@ -93,11 +93,12 @@ class AccessLevel
         }
 
         $data = json_decode($results->getRawResponse(), true);
+
         if ($data['response']['numFound'] < 1) {
             return self::ROLE_SPECIFIC;
         }
 
-        $roles       = $data['response']['docs'][0]['policy_datastream_roles_ms'];
+        $roles       = $data['response']['docs'][0]['policy_datastream_roles_ms'] ?? [];
         $sortedRoles = [];
 
         foreach ($roles as $role) {
