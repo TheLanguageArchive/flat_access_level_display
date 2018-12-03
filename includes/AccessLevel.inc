@@ -85,7 +85,7 @@ class AccessLevel
         $this->connect();
 
         try {
-            $results = $this->solr->search('PID:' . str_replace(':', '\:', $this->pid), 0, 10);
+            $results = $this->solr->search('PID:' . str_replace(':', '\:', $this->pid));
         } catch (Exception $e) {
 
             drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error');

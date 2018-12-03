@@ -9,7 +9,6 @@
  *
  * @return array
  */
-
 function flat_access_level_display_islandora_compound_object_access_level_display_theme($pid) {
 
     drupal_add_css(drupal_get_path('module', 'flat_access_level_display') . '/css/app.css');
@@ -59,8 +58,8 @@ function flat_access_level_display_display_label($vars) {
 
         return theme('flat_access_level_display_display_label_template', [
             'access_level' => $accessLevel->fetch(),
-            ]);
-        }
+        ]);
+    }
 }
 
 /**
