@@ -20,21 +20,6 @@ class AccessLevel
     const ROLE_SPECIFIC      = 'specific';
 
     /**
-     * @var AbstractObject
-     */
-    private $object;
-
-    /**
-     * @var string
-     */
-    private $pid;
-
-    /**
-     * @var Apache_Solr_Service
-     */
-    private $solr;
-
-    /**
      * @var array
      */
     private $roleStrength = [
@@ -45,60 +30,17 @@ class AccessLevel
     ];
 
     /**
-     * Constructor
-     *
-     * @param string $pid
-     */
-    public function __construct(string $pid)
-    {
-        $this->pid = $pid;
-    }
-
-    /**
-     * Connecting to solr
-     *
-     * @return Apache_Solr_Service
-     */
-    public function connect()
-    {
-        if (null !== $this->solr) {
-            return $this->solr;
-        }
-
-        $path_parts = parse_url(variable_get('islandora_solr_url', 'localhost:8080/solr'));
-
-        $this->solr = new Apache_Solr_Service($path_parts['host'], $path_parts['port'], $path_parts['path'] . '/');
-        $this->solr->setCreateDocuments(0);
-
-        return $this->solr;
-    }
-
-    /**
      * Determining current biggest role
      * based on strength
      *
      * @return string
      */
-    public function fetch()
+    public function fetch($roles)
     {
-        // connect to solr
-        $this->connect();
-
-        try {
-            $results = $this->solr->search('PID:' . str_replace(':', '\:', $this->pid));
-        } catch (Exception $e) {
-
-            drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error');
+        if (!is_array($roles) || count($roles) === 0) {
             return self::ROLE_SPECIFIC;
         }
 
-        $data = json_decode($results->getRawResponse(), true);
-
-        if ($data['response']['numFound'] < 1) {
-            return self::ROLE_SPECIFIC;
-        }
-
-        $roles       = $data['response']['docs'][0]['policy_datastream_roles_ms'] ?? [];
         $sortedRoles = [];
 
         foreach ($roles as $role) {
