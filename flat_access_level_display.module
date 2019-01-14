@@ -60,19 +60,18 @@ function flat_access_level_display_theme($existing, $type, $theme, $path) {
  *
  * @return void
  */
-function flat_access_level_display_display_label($vars) {
+function flat_access_level_display_display_label(&$vars) {
 
     drupal_add_css(drupal_get_path('module', 'flat_access_level_display') . '/css/app.css');
     module_load_include('inc', 'flat_access_level_display', 'includes/AccessLevel');
 
-    if ($vars['roles']) {
+    $vars['roles'] = $vars['roles'] ?? [];
 
-        $accessLevel = new AccessLevel();
+    $accessLevel = new AccessLevel();
 
-        return theme('flat_access_level_display_display_label_template', [
-            'access_level' => $accessLevel->fetch($vars['roles']),
-        ]);
-    }
+    return theme('flat_access_level_display_display_label_template', [
+        'access_level' => $accessLevel->fetch($vars['roles']),
+    ]);
 }
 
 /**
