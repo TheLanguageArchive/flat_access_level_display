@@ -95,7 +95,7 @@ function flat_access_level_display_compound_object_query($pid) {
           'pid' => $result['PID'],
           'title' => $result['object_label'],
           'seq' => $sequence,
-          'roles' => $result['solr_doc']['policy_datastream_roles_ms'],
+          'roles' => $result['solr_doc']['policy_datastream_roles_ms'] ?? [],
         );
       }
     }

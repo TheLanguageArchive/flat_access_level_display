@@ -66,8 +66,7 @@ function flat_access_level_display_display_label(&$vars) {
     module_load_include('inc', 'flat_access_level_display', 'includes/AccessLevel');
 
     $vars['roles'] = $vars['roles'] ?? [];
-
-    $accessLevel = new AccessLevel();
+    $accessLevel   = new AccessLevel();
 
     return theme('flat_access_level_display_display_label_template', [
         'access_level' => $accessLevel->fetch($vars['roles']),
