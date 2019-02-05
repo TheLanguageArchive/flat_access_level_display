@@ -2,5 +2,5 @@ name = Flat Access Level Display
 description = A Flat project that displays the current access level
 package = FLAT
 core = 7.x
-version = 7.x-dev
+version = 7.x-0.1-dev
 dependencies[] = islandora_compound_object
