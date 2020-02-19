@@ -5,7 +5,19 @@
 class AccessLevelFacet
 {
     /** @var string */
-    const FACET_FIELD = 'compound_policy_datastream_children_access_levels_ms';
+    const FACET_FIELD                = 'compound_policy_datastream_children_access_levels_ms';
+
+    /** @var string */
+    const FACET_BUCKET_PUBLIC        = 'public';
+
+    /** @var string */
+    const FACET_BUCKET_AUTHENTICATED = 'authenticated';
+
+    /** @var string */
+    const FACET_BUCKET_ACADEMIC      = 'academic';
+
+    /** @var string */
+    const FACET_BUCKET_RESTRICTED    = 'restricted';
 
     /**
      * @var IslandoraSolrQueryProcessor
@@ -121,10 +133,10 @@ class AccessLevelFacet
     {
         $labels = [
 
-            'public'        => 'Public',
-            'authenticated' => 'Registered Users',
-            'academic'      => 'Academic Users',
-            'restricted'    => 'Restricted',
+            self::FACET_BUCKET_PUBLIC        => 'Public',
+            self::FACET_BUCKET_AUTHENTICATED => 'Registered Users',
+            self::FACET_BUCKET_ACADEMIC      => 'Academic Users',
+            self::FACET_BUCKET_RESTRICTED    => 'Restricted',
         ];
 
         return $labels[$bucket] ?? 'Unknown';
